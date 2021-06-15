@@ -1,0 +1,12 @@
+---
+- name: Display facts
+  hosts: host1
+  tasks:
+    - name: displsy fqdn
+      debug:
+        msg: >
+          My FQDN is {{ ansible_fqdn }}
+    - name: display ipv4 address
+      debug:
+        msg: >
+          Your public ipv4 address is {{  ansible_default_ipv4.address }}

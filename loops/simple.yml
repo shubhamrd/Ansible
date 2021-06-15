@@ -1,0 +1,12 @@
+---
+- name: using simple loops
+  hosts: gcp
+  tasks:
+    - name: adding user
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+      with_items: 
+        - { name: 'tom', groups: 'shubhamrd24' }
+        - { name: 'CB' , groups: 'shubhamrd24' }
+

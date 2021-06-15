@@ -1,0 +1,19 @@
+---
+- name: add custom fact
+  hosts: gcp
+  vars:
+    remote_dir: /etc/ansible/facts.d
+    fact_dir: fact/tp.fact
+
+  tasks:
+    - name: create a directory
+      file:
+        state: directory
+        recurse: yes
+        path: "{{ remote_dir }}"
+        
+    - name: Install new fact
+      copy:
+        src: "{{ fact_dir }}"
+        dest: "{{ remote_dir }}"
+

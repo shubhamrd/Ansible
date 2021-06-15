@@ -1,0 +1,18 @@
+---
+- name: handerlses example
+  hosts: gcp
+  tasks:
+    - name: add user
+      user:
+        name: abc
+        state: absent
+      notify:
+        - give_password
+
+  handlers:
+    - name: give_password
+      user:
+        name: abc
+        password: $6$nckdjnkcknit$ROuJ0cGrtyQQhBdG/8uHJ1GJglnfXVSKQQByOX8avhlfizE6MUaTsjCFlWTjJyYUmtF75u7VM9sHGb64Ngg6K.
+  
+

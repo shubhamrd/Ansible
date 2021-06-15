@@ -1,0 +1,26 @@
+---
+- name: Install and start apache
+  hosts: web
+  vars: 
+   service: httpd
+  tasks:
+          - name: install httpd
+            yum:
+                    name: "{{ service }}"
+                    state: present
+
+          - name: create index.html
+            copy:
+                    content: 'This website created using ansible automation'
+                    dest: /var/www/html/index.html
+
+          - name: start httpd
+            service:
+                    name: "{{ service }}"
+                    state: started
+                    enabled: true
+          - firewalld:
+                    service: https
+                    permanent: yes
+                    state: enabled
+

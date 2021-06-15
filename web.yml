@@ -1,0 +1,30 @@
+
+---
+- name: Implementing a web server
+  hosts: gcp
+  tasks:
+    - name: install http packages
+      yum:
+        name: httpd
+        state: latest
+    - name: start and enable service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name:
+      copy:
+        content: " Web server with ansible configuration"
+        dest: '/var/www/html/index.html'
+    - name:
+      firewalld:
+        service: http
+        state: enabled
+        
+    - name:
+      firewalld:
+        service: http
+        state: enabled
+        permanent: yes
+

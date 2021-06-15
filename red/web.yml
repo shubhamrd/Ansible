@@ -1,0 +1,25 @@
+---
+- name: create a web server
+  hosts: gcp
+  tasks:
+    - name: install http packages
+      yum: 
+        name: httpd
+        state: latest
+
+    - name: start and enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: create index.html
+      copy:
+          content: " hello form GCP using ansible"
+          dest: '/var/www/html/index.html'
+
+    - name: add service to firewall
+      firewalld:
+        service: http
+        state: enabled
+

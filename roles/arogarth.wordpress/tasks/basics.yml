@@ -1,0 +1,7 @@
+---
+
+- name: Install basic Packages
+  apt: name={{ item }}
+  with_items: [vim, curl, zip, unzip, python-mysqldb]
+  register: basic_pkg_installed
+

@@ -1,0 +1,9 @@
+---
+- name: poweroff machines
+  hosts: gcp
+  tasks:
+          - name: poweroff machines
+            command: poweroff
+                    
+                    
+

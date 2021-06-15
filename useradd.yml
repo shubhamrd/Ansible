@@ -1,0 +1,8 @@
+---
+- name: add users
+  hosts:  gcp
+  tasks:
+    - name: add user
+      user:
+        name: [ nobita, tom , jerry ]
+        state: present

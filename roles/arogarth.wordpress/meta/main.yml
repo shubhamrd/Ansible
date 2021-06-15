@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  author: Arogarth
+  description: Ansible role to install wordpress
+  license: GPLv2
+  min_ansible_version: 1.6
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  #  - utopic
+  #  - vivid
+  - name: Debian
+    versions:
+    - jessie
+  #  - lenny
+  #  - squeeze
+  #  - wheezy
+  #
+  categories:
+  - web
+dependencies: []
+  

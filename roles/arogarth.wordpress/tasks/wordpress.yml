@@ -1,0 +1,63 @@
+---
+
+- name: Detect Existing installation
+  stat: path=/var/www/{{wp_name}}
+  register: wp
+
+- name: Download latest Wordpress
+  get_url: url=https://{{ wp_language }}.wordpress.org/latest-{{ wp_language}}_{{ wp_locale }}.zip dest=/tmp/wordpress.zip
+
+- name: Unpack Wordpress to /tmp/wordpress
+  unarchive: copy=no src=/tmp/wordpress.zip dest=/tmp/ creates=/var/www/{{wp_name}} owner=www-data group=www-data
+  when: wp.stat.exists != True
+
+- name: Move /tmp/wordpress to /var/www/{{wp_name}}
+  command: mv /tmp/wordpress /var/www/{{wp_name}}
+  when: wp.stat.exists != True
+
+- name: Initialize Database
+  mysql_db:
+    name: "{{wp_db_name}}"
+    encoding: utf8
+    state: present
+
+- name: Generate Wordpress Database Password
+  set_fact:
+    wp_db_password: "{{lookup('password', '/tmp/' + wp_name + '.pwd')}}"
+
+- name: Database User
+  mysql_user:
+    name: "{{wp_db_user}}"
+    password: "{{wp_db_password}}"
+    priv: "{{wp_db_name}}.*:ALL"
+
+- name: Create Wordpress Salts
+  command: /usr/bin/curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: wp_salt
+  when: wp.stat.exists != True
+
+- name: Install Wordpress config
+  template:
+    src: wp-config.php
+    dest: "/var/www/{{wp_name}}/wp-config.php"
+    owner: www-data
+    group: www-data
+  when: wp.stat.exists != True
+
+- name: Install Apache2 Config for wordpress
+  template:
+    src: apache2.conf
+    dest: /etc/apache2/sites-available/{{wp_name}}.conf
+  register: apache2_conf
+
+- name: Install Apache2 mod_rewrite
+  apache2_module:
+    state: present
+    name: rewrite
+  notify: reload apache2
+  when: "{{ wp_enable_rewrite }}"
+
+- name: Enable Wordpress Apache Config
+  command: /usr/sbin/a2ensite {{wp_name}}
+  notify: reload apache2
+  when: apache2_conf.changed

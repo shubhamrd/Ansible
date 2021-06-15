@@ -1,0 +1,18 @@
+---
+- name: use of tags
+  hosts:
+    - host1
+    - host2
+  tasks:
+    - name: install webserver
+      yum:
+        name: yum
+        state: installed
+      tags: webserver
+
+    - name:
+      yum:
+        name: mysql
+        state: installed
+      tags: database
+

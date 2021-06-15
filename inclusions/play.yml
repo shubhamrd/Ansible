@@ -1,0 +1,20 @@
+---
+- name: Configure web server
+  hosts: node1
+  vars:
+    rule: http
+  
+  tasks:
+   - name: Included the variables from the yml file
+     include_vars: vars/var.yml
+    
+   - name: Includes the environent file
+     include: tasks/env.yml
+     vars:
+        package: httpd
+        service: httpd
+        svc_state:  started
+   - name: create index.html
+     copy:
+       content: " {{ ansible_fqdn }} has been customize using ansible the {{ ansible_date_time.date }} \n"
+       dest: /var/www/html/index.html

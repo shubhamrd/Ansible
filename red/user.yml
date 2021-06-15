@@ -1,0 +1,8 @@
+---
+- name: add some users
+  hosts: gcp
+  tasks:
+    - name: remove user
+      user:
+        name: tom
+        state: absent

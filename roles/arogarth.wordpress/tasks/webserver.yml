@@ -1,0 +1,10 @@
+---
+
+- name: Install required Packages
+  apt: name={{ item }}
+  with_items: [apache2, libapache2-mod-php5, php5, php5-curl, mysql-server, mysql-client, php5-mysql]
+  register: wp_pkg_installed
+
+- name: Disable Apache default config
+  command: /usr/sbin/a2dissite 000-default
+  notify: reload apache2

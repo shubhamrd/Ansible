@@ -1,0 +1,9 @@
+
+---
+- name: use git hub rule
+  hosts: rhel
+  user: shubhamrd24
+  become: true
+
+  roles:
+    - arogarth.wordpress
